@@ -60,7 +60,7 @@ body {
 .hero-title { font-size: clamp(28px, 4.2vw, 56px); margin: 0 0 12px; letter-spacing: .5px; }
 .hero-sub { color: var(--muted); margin: 0 auto 22px; max-width: 720px; }
 .cta-group { display: inline-flex; flex-wrap: wrap; gap: 12px; }
-.hero-bg { position: absolute; inset: 0; background: url('assets/hero-blur.svg') center/cover no-repeat; opacity: .25; pointer-events: none; }
+.hero-bg { position: absolute; inset: 0; background: url('assets/hero-blur.png') center/cover no-repeat; opacity: .25; pointer-events: none; }
 
 /* Sections */
 .section { padding: 64px 0; }
