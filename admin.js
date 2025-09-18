@@ -299,8 +299,24 @@ function updateTextContent() {
 
 // 预览网站
 function previewWebsite() {
+    // 先保存当前配置
+    currentConfig.mainTitle = document.getElementById('mainTitle').value;
+    currentConfig.subTitle = document.getElementById('subTitle').value;
+    localStorage.setItem('sgjws_config', JSON.stringify(currentConfig));
+    
     // 在新窗口中打开主网站
-    window.open('index.html', '_blank');
+    const previewWindow = window.open('index.html', '_blank');
+    
+    // 等待窗口加载完成后应用配置
+    if (previewWindow) {
+        previewWindow.addEventListener('load', function() {
+            setTimeout(() => {
+                previewWindow.postMessage({type: 'admin_update', config: currentConfig}, '*');
+            }, 1000);
+        });
+    }
+    
+    showMessage('正在打开预览窗口...', 'success');
 }
 
 // 直接更新官网文件
@@ -646,7 +662,26 @@ function applyChangesNow() {
     // 更新当前页面显示
     updateCurrentPageDisplay();
     
-    showMessage('更改已立即应用！请查看主网站效果。', 'success');
+    // 通知主网站更新
+    notifyMainWebsite();
+    
+    showMessage('更改已立即应用！主网站已自动更新。', 'success');
+}
+
+// 通知主网站更新
+function notifyMainWebsite() {
+    // 发送消息给主网站窗口
+    if (window.opener) {
+        window.opener.postMessage({type: 'admin_update', config: currentConfig}, '*');
+    }
+    
+    // 触发主网站重新加载配置
+    const mainWindow = window.open('index.html', '_blank');
+    if (mainWindow) {
+        setTimeout(() => {
+            mainWindow.location.reload();
+        }, 500);
+    }
 }
 
 // 更新当前页面显示

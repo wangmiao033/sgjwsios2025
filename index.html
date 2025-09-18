@@ -147,6 +147,85 @@
     </div>
 
     <script src="script.js"></script>
+    <script>
+        // 加载后台配置并应用
+        function loadAdminConfig() {
+            const config = localStorage.getItem('sgjws_config');
+            if (config) {
+                try {
+                    const adminConfig = JSON.parse(config);
+                    applyAdminConfig(adminConfig);
+                } catch (error) {
+                    console.log('无法加载后台配置:', error);
+                }
+            }
+        }
+        
+        // 应用后台配置
+        function applyAdminConfig(config) {
+            // 更新背景图片
+            if (config.background && config.background.data) {
+                const heroBg = document.querySelector('.hero-bg');
+                if (heroBg) {
+                    heroBg.style.background = `url('${config.background.data}') center/cover no-repeat`;
+                }
+            }
+            
+            // 更新主标题
+            if (config.mainTitle) {
+                const mainTitle = document.querySelector('.hero-title');
+                if (mainTitle) {
+                    mainTitle.textContent = config.mainTitle;
+                }
+            }
+            
+            // 更新副标题
+            if (config.subTitle) {
+                const subTitle = document.querySelector('.hero-sub');
+                if (subTitle) {
+                    subTitle.innerHTML = config.subTitle.replace(/\n/g, '<br>');
+                }
+            }
+            
+            // 更新Logo
+            if (config.logo && config.logo.data) {
+                const logoImages = document.querySelectorAll('img[src*="logo"]');
+                logoImages.forEach(img => {
+                    img.src = config.logo.data;
+                });
+            }
+            
+            // 更新游戏截图
+            if (config.screenshots && config.screenshots.length > 0) {
+                const screenshotImages = document.querySelectorAll('img[src*="shot"]');
+                screenshotImages.forEach((img, index) => {
+                    if (config.screenshots[index] && config.screenshots[index].data) {
+                        img.src = config.screenshots[index].data;
+                    }
+                });
+            }
+            
+            // 更新App Store按钮
+            if (config.appstore && config.appstore.data) {
+                const appstoreImages = document.querySelectorAll('img[src*="appstore"]');
+                appstoreImages.forEach(img => {
+                    img.src = config.appstore.data;
+                });
+            }
+        }
+        
+        // 页面加载完成后应用配置
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAdminConfig();
+        });
+        
+        // 监听后台更新消息
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'admin_update') {
+                applyAdminConfig(event.data.config);
+            }
+        });
+    </script>
     
 </body>
 </html>
