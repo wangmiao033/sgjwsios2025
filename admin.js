@@ -305,22 +305,39 @@ function previewWebsite() {
 
 // 直接更新官网文件
 function updateWebsiteFiles() {
-    if (!currentConfig.logo && !currentConfig.screenshots.length && !currentConfig.appstore && !currentConfig.background) {
-        showMessage('请先上传一些图片再进行更新！', 'error');
+    // 检查是否有任何配置
+    const hasAnyConfig = currentConfig.logo || 
+                        (currentConfig.screenshots && currentConfig.screenshots.length > 0) || 
+                        currentConfig.appstore || 
+                        currentConfig.background ||
+                        currentConfig.mainTitle !== '一骑当千，纵横沙场' ||
+                        currentConfig.subTitle !== '上百武将齐聚，无双连击爽快割草！\n在掌中重温三国乱世的热血与谋略。';
+    
+    if (!hasAnyConfig) {
+        showMessage('请先上传一些图片或修改文字内容再进行更新！', 'error');
         return;
     }
     
-    // 创建更新后的HTML内容
-    let updatedHTML = generateUpdatedHTML();
-    
-    // 创建更新后的CSS内容
-    let updatedCSS = generateUpdatedCSS();
-    
-    // 下载更新后的文件
-    downloadFile('index_updated.html', updatedHTML, 'text/html');
-    downloadFile('styles_updated.css', updatedCSS, 'text/css');
-    
-    showMessage('已生成更新后的文件！请下载并替换原文件。', 'success');
+    try {
+        // 创建更新后的HTML内容
+        let updatedHTML = generateUpdatedHTML();
+        
+        // 创建更新后的CSS内容
+        let updatedCSS = generateUpdatedCSS();
+        
+        // 下载更新后的文件
+        downloadFile('index_updated.html', updatedHTML, 'text/html');
+        downloadFile('styles_updated.css', updatedCSS, 'text/css');
+        
+        showMessage('已生成更新后的文件！请下载并替换原文件。', 'success');
+        
+        // 同时更新当前页面的显示
+        updateCurrentPageDisplay();
+        
+    } catch (error) {
+        console.error('生成文件时出错:', error);
+        showMessage('生成文件时出错，请重试！', 'error');
+    }
 }
 
 // 生成更新后的HTML
@@ -615,6 +632,74 @@ function downloadFile(filename, content, mimeType) {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+}
+
+// 立即应用更改
+function applyChangesNow() {
+    // 更新文字内容
+    currentConfig.mainTitle = document.getElementById('mainTitle').value;
+    currentConfig.subTitle = document.getElementById('subTitle').value;
+    
+    // 保存到本地存储
+    localStorage.setItem('sgjws_config', JSON.stringify(currentConfig));
+    
+    // 更新当前页面显示
+    updateCurrentPageDisplay();
+    
+    showMessage('更改已立即应用！请查看主网站效果。', 'success');
+}
+
+// 更新当前页面显示
+function updateCurrentPageDisplay() {
+    // 更新背景图片
+    if (currentConfig.background) {
+        const heroBg = document.querySelector('.hero-bg');
+        if (heroBg) {
+            heroBg.style.background = `url('${currentConfig.background.data}') center/cover no-repeat`;
+        }
+    }
+    
+    // 更新主标题
+    if (currentConfig.mainTitle) {
+        const mainTitle = document.querySelector('.hero-title');
+        if (mainTitle) {
+            mainTitle.textContent = currentConfig.mainTitle;
+        }
+    }
+    
+    // 更新副标题
+    if (currentConfig.subTitle) {
+        const subTitle = document.querySelector('.hero-sub');
+        if (subTitle) {
+            subTitle.innerHTML = currentConfig.subTitle.replace(/\n/g, '<br>');
+        }
+    }
+    
+    // 更新Logo
+    if (currentConfig.logo) {
+        const logoImages = document.querySelectorAll('img[src*="logo"]');
+        logoImages.forEach(img => {
+            img.src = currentConfig.logo.data;
+        });
+    }
+    
+    // 更新游戏截图
+    if (currentConfig.screenshots && currentConfig.screenshots.length > 0) {
+        const screenshotImages = document.querySelectorAll('img[src*="shot"]');
+        screenshotImages.forEach((img, index) => {
+            if (currentConfig.screenshots[index]) {
+                img.src = currentConfig.screenshots[index].data;
+            }
+        });
+    }
+    
+    // 更新App Store按钮
+    if (currentConfig.appstore) {
+        const appstoreImages = document.querySelectorAll('img[src*="appstore"]');
+        appstoreImages.forEach(img => {
+            img.src = currentConfig.appstore.data;
+        });
+    }
 }
 
 // 恢复默认设置
