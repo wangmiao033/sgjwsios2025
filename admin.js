@@ -10,6 +10,7 @@ const ADMIN_CREDENTIALS = {
 let currentConfig = {
     logo: null,
     screenshots: [],
+    characters: [],
     appstore: null,
     background: null,
     mainTitle: '一骑当千，纵横沙场',
@@ -82,6 +83,14 @@ function handleBackgroundUpload(event) {
     }
 }
 
+// 处理人物立绘上传
+function handleCharactersUpload(event) {
+    const files = Array.from(event.target.files);
+    files.forEach((file, index) => {
+        processImageFile(file, 'characters', index);
+    });
+}
+
 // 处理图片文件
 function processImageFile(file, type, index = 0) {
     if (!file.type.startsWith('image/')) {
@@ -101,6 +110,9 @@ function processImageFile(file, type, index = 0) {
         if (type === 'screenshots') {
             if (!currentConfig.screenshots) currentConfig.screenshots = [];
             currentConfig.screenshots[index] = imageData;
+        } else if (type === 'characters') {
+            if (!currentConfig.characters) currentConfig.characters = [];
+            currentConfig.characters[index] = imageData;
         } else {
             currentConfig[type] = imageData;
         }
@@ -118,6 +130,8 @@ function updatePreview(type, index = 0) {
     
     if (type === 'screenshots') {
         updateScreenshotsPreview();
+    } else if (type === 'characters') {
+        updateCharactersPreview();
     } else {
         updateSinglePreview(previewContainer, currentConfig[type], type);
     }
@@ -158,6 +172,24 @@ function updateScreenshotsPreview() {
     `).join('');
 }
 
+// 更新人物预览
+function updateCharactersPreview() {
+    const container = document.getElementById('charactersPreview');
+    if (!currentConfig.characters || currentConfig.characters.length === 0) {
+        container.innerHTML = '<div class="preview-item"><div class="preview-image" style="background: #f8f9fa; display: flex; align-items: center; justify-content: center; color: #6c757d;">暂无人物</div></div>';
+        return;
+    }
+    
+    container.innerHTML = currentConfig.characters.map((imageData, index) => `
+        <div class="preview-item">
+            <img src="${imageData.data}" alt="人物${index + 1}" class="preview-image" style="height: 120px; object-fit: cover;">
+            <div class="preview-name">${imageData.name}</div>
+            <div class="preview-size">${imageData.size}</div>
+            <button class="btn btn-danger" onclick="removeCharacter(${index})" style="margin-top: 10px; padding: 5px 10px; font-size: 12px;">删除</button>
+        </div>
+    `).join('');
+}
+
 // 删除图片
 function removeImage(type) {
     currentConfig[type] = null;
@@ -170,6 +202,13 @@ function removeScreenshot(index) {
     currentConfig.screenshots.splice(index, 1);
     updateScreenshotsPreview();
     showMessage('截图已删除', 'success');
+}
+
+// 删除人物
+function removeCharacter(index) {
+    currentConfig.characters.splice(index, 1);
+    updateCharactersPreview();
+    showMessage('人物已删除', 'success');
 }
 
 // 拖拽处理
@@ -803,4 +842,314 @@ function formatFileSize(bytes) {
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
+// ==================== 内容管理功能 ====================
+
+// 页面内容模板
+const pageTemplates = {
+    terms: {
+        title: '用户协议',
+        content: `<h2>1. 服务条款</h2>
+<p>欢迎使用《三国将无双》游戏服务。通过下载、安装或使用本游戏，您同意遵守以下条款和条件。</p>
+
+<h2>2. 用户责任</h2>
+<p>作为用户，您同意：</p>
+<ul>
+    <li>提供真实、准确的个人信息</li>
+    <li>不得使用外挂、作弊软件或其他非法手段</li>
+    <li>不得传播违法、有害或不当内容</li>
+    <li>不得干扰其他用户的正常游戏体验</li>
+    <li>遵守游戏内的所有规则和指导原则</li>
+</ul>
+
+<h2>3. 游戏内容</h2>
+<p>游戏内容包括但不限于：</p>
+<ul>
+    <li>游戏软件、图像、音频、文本等</li>
+    <li>虚拟物品、货币、角色等</li>
+    <li>用户生成的内容</li>
+</ul>
+<p>所有游戏内容的知识产权归我们所有。</p>
+
+<h2>4. 服务变更</h2>
+<p>我们保留随时修改、暂停或终止游戏服务的权利，无需提前通知。</p>
+
+<h2>5. 免责声明</h2>
+<p>游戏服务按"现状"提供，我们不保证服务的连续性、准确性或完整性。</p>
+
+<h2>6. 争议解决</h2>
+<p>因本协议产生的争议，双方应友好协商解决；协商不成的，提交有管辖权的人民法院解决。</p>
+
+<h2>7. 联系我们</h2>
+<p>如有疑问，请联系我们：</p>
+<p>邮箱：support@sanguo-game.com</p>
+<p>更新时间：${new Date().toLocaleDateString('zh-CN')}</p>`
+    },
+    privacy: {
+        title: '隐私政策',
+        content: `<h2>1. 信息收集</h2>
+<p>我们收集您在使用《三国将无双》游戏时提供的信息，包括但不限于：</p>
+<ul>
+    <li>游戏账号信息</li>
+    <li>设备信息</li>
+    <li>游戏数据</li>
+    <li>联系方式（如您主动提供）</li>
+</ul>
+
+<h2>2. 信息使用</h2>
+<p>我们使用收集的信息用于：</p>
+<ul>
+    <li>提供游戏服务</li>
+    <li>改善用户体验</li>
+    <li>客户支持</li>
+    <li>安全防护</li>
+</ul>
+
+<h2>3. 信息保护</h2>
+<p>我们采取适当的技术和组织措施保护您的个人信息，防止未经授权的访问、使用或披露。</p>
+
+<h2>4. 信息共享</h2>
+<p>我们不会向第三方出售、交易或转让您的个人信息，除非：</p>
+<ul>
+    <li>获得您的明确同意</li>
+    <li>法律要求</li>
+    <li>保护我们的权利和财产</li>
+</ul>
+
+<h2>5. 联系我们</h2>
+<p>如果您对本隐私政策有任何疑问，请通过以下方式联系我们：</p>
+<p>邮箱：privacy@sanguo-game.com</p>
+<p>更新时间：${new Date().toLocaleDateString('zh-CN')}</p>`
+    },
+    contact: {
+        title: '联系我们',
+        content: `<h2>客服支持</h2>
+<p>如果您在游戏过程中遇到任何问题，我们的客服团队随时为您提供帮助。</p>
+
+<div class="contact-methods">
+    <div class="contact-item">
+        <h3>📧 邮箱支持</h3>
+        <p>support@sanguo-game.com</p>
+        <p>工作时间：周一至周日 9:00-21:00</p>
+    </div>
+    
+    <div class="contact-item">
+        <h3>💬 在线客服</h3>
+        <p>游戏内客服系统</p>
+        <p>24小时在线服务</p>
+    </div>
+    
+    <div class="contact-item">
+        <h3>📱 官方QQ群</h3>
+        <p>群号：123456789</p>
+        <p>与玩家交流，获取最新资讯</p>
+    </div>
+</div>
+
+<h2>常见问题</h2>
+<div class="faq">
+    <h3>Q: 游戏无法启动怎么办？</h3>
+    <p>A: 请检查设备系统版本是否满足要求，尝试重启设备或重新安装游戏。</p>
+    
+    <h3>Q: 如何找回丢失的游戏进度？</h3>
+    <p>A: 请通过客服邮箱联系我们，提供您的游戏ID和相关信息，我们会协助您恢复进度。</p>
+    
+    <h3>Q: 充值问题如何解决？</h3>
+    <p>A: 如遇到充值问题，请保留支付凭证，联系客服处理。</p>
+</div>
+
+<h2>意见反馈</h2>
+<p>我们重视每一位玩家的意见和建议，您的反馈将帮助我们不断改进游戏体验。</p>
+<p>反馈邮箱：feedback@sanguo-game.com</p>`
+    }
+};
+
+// 加载页面内容
+function loadPageContent() {
+    const pageSelect = document.getElementById('contentPageSelect');
+    const editor = document.getElementById('contentEditor');
+    const pageTitle = document.getElementById('pageTitle');
+    const pageContent = document.getElementById('pageContent');
+    const contactEmail = document.getElementById('contactEmail');
+    
+    if (!pageSelect.value) {
+        editor.style.display = 'none';
+        return;
+    }
+    
+    const pageType = pageSelect.value;
+    const template = pageTemplates[pageType];
+    
+    if (template) {
+        pageTitle.value = template.title;
+        pageContent.value = template.content;
+        contactEmail.value = pageType === 'contact' ? 'support@sanguo-game.com' : 
+                           pageType === 'privacy' ? 'privacy@sanguo-game.com' : 
+                           'support@sanguo-game.com';
+        
+        editor.style.display = 'block';
+    }
+}
+
+// 保存页面内容
+function savePageContent() {
+    const pageSelect = document.getElementById('contentPageSelect');
+    const pageTitle = document.getElementById('pageTitle').value;
+    const pageContent = document.getElementById('pageContent').value;
+    const contactEmail = document.getElementById('contactEmail').value;
+    
+    if (!pageSelect.value || !pageTitle || !pageContent) {
+        showMessage('请填写完整信息', 'error');
+        return;
+    }
+    
+    const pageType = pageSelect.value;
+    const fileName = pageType + '.html';
+    
+    // 生成HTML内容
+    const htmlContent = generatePageHTML(pageTitle, pageContent, contactEmail);
+    
+    // 下载文件
+    downloadFile(htmlContent, fileName, 'text/html');
+    
+    showMessage(`已生成 ${fileName} 文件，请下载并替换原文件`, 'success');
+}
+
+// 预览页面内容
+function previewPageContent() {
+    const pageTitle = document.getElementById('pageTitle').value;
+    const pageContent = document.getElementById('pageContent').value;
+    const contactEmail = document.getElementById('contactEmail').value;
+    
+    if (!pageTitle || !pageContent) {
+        showMessage('请先填写页面内容', 'error');
+        return;
+    }
+    
+    const htmlContent = generatePageHTML(pageTitle, pageContent, contactEmail);
+    const previewWindow = window.open('', '_blank', 'width=1200,height=800');
+    previewWindow.document.write(htmlContent);
+    previewWindow.document.close();
+}
+
+// 重置页面内容
+function resetPageContent() {
+    const pageSelect = document.getElementById('contentPageSelect');
+    if (pageSelect.value) {
+        loadPageContent();
+        showMessage('已重置为默认内容', 'success');
+    }
+}
+
+// 生成页面HTML
+function generatePageHTML(title, content, email) {
+    return `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${title} - 三国将无双</title>
+    <link rel="stylesheet" href="styles.css?v=20250118-6">
+    <link rel="icon" href="assets/logo.png" type="image/png">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo">
+                <img src="assets/logo.png" alt="三国将无双" width="32" height="32">
+                <span>三国将无双</span>
+            </a>
+            <nav class="nav" aria-label="主导航">
+                <ul class="nav-menu">
+                    <li><a href="index.html">返回首页</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <section class="section">
+            <div class="container">
+                <h1 class="section-title">${title}</h1>
+                <div class="content">
+                    ${content}
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2025 三国将无双，保留所有权利。</p>
+            <div class="footer-links">
+                <a href="terms.html">用户协议</a>
+                <a href="privacy.html">隐私政策</a>
+                <a href="contact.html">联系我们</a>
+                <a href="admin.html">后台管理</a>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .content h2 {
+            color: var(--text);
+            margin: 30px 0 15px;
+            font-size: 20px;
+        }
+        
+        .content h3 {
+            color: var(--accent);
+            margin: 20px 0 10px;
+            font-size: 16px;
+        }
+        
+        .content p {
+            color: var(--muted);
+            margin: 10px 0;
+        }
+        
+        .content ul {
+            color: var(--muted);
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        .contact-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .contact-item {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .contact-item h3 {
+            margin: 0 0 10px;
+            color: var(--text);
+        }
+        
+        .faq {
+            margin: 30px 0;
+        }
+        
+        .faq h3 {
+            color: var(--primary);
+            margin: 20px 0 8px;
+        }
+    </style>
+</body>
+</html>`;
 }

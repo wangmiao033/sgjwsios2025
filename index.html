@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css?v=20250118-6">
     <link rel="icon" href="assets/logo.png" type="image/png">
 </head>
 <body>
@@ -39,7 +39,7 @@
                     在掌中重温三国乱世的热血与谋略。</p>
                 <div class="cta-group">
                     <a href="#download" class="btn btn-primary">App Store 立即下载</a>
-                    <button class="btn btn-ghost" data-open-video>观看宣传片</button>
+                    <a href="#video" class="btn btn-ghost">观看宣传片</a>
                 </div>
             </div>
             <div class="hero-bg" aria-hidden="true"></div>
@@ -72,23 +72,160 @@
         <section id="gallery" class="section gallery">
             <div class="container">
                 <h2 class="section-title">游戏截图</h2>
-                <div class="gallery-grid">
-                    <figure class="shot">
-                        <img src="assets/shot1.png" alt="战斗画面截图">
-                        <figcaption>爽快连击</figcaption>
-                    </figure>
-                    <figure class="shot">
-                        <img src="assets/shot2.png" alt="武将界面截图">
-                        <figcaption>名将集结</figcaption>
-                    </figure>
-                    <figure class="shot">
-                        <img src="assets/shot3.png" alt="阵容布置截图">
-                        <figcaption>策略布阵</figcaption>
-                    </figure>
-                    <figure class="shot">
-                        <img src="assets/shot4.png" alt="世界地图截图">
-                        <figcaption>攻城略地</figcaption>
-                    </figure>
+                <div class="gallery-showcase">
+                    <div class="main-screenshot">
+                        <div class="screenshot-frame">
+                            <img src="assets/1(1).jpg" alt="游戏截图1" class="hero-image">
+                            <div class="screenshot-overlay">
+                                <div class="play-button">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M8 5v14l11-7z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="screenshot-caption">
+                            <h3>七日登陆送好礼</h3>
+                            <p>累计登陆七日领小乔，多重福利载誉而归</p>
+                        </div>
+                    </div>
+                    <div class="screenshot-thumbnails">
+                        <div class="thumbnail active" data-screenshot="shot1">
+                            <img src="assets/1(1).jpg" alt="游戏截图1">
+                            <span>七日登陆</span>
+                        </div>
+                        <div class="thumbnail" data-screenshot="shot2">
+                            <img src="assets/2(1).jpg" alt="游戏截图2">
+                            <span>战斗画面</span>
+                        </div>
+                        <div class="thumbnail" data-screenshot="shot3">
+                            <img src="assets/3(1).jpg" alt="游戏截图3">
+                            <span>武将界面</span>
+                        </div>
+                        <div class="thumbnail" data-screenshot="shot4">
+                            <img src="assets/4(1).jpg" alt="游戏截图4">
+                            <span>策略布阵</span>
+                        </div>
+                        <div class="thumbnail" data-screenshot="shot5">
+                            <img src="assets/5(1).jpg" alt="游戏截图5">
+                            <span>攻城略地</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 人物展示区域 -->
+                <div class="characters-showcase">
+                    <h3 class="characters-title">名将风采</h3>
+                    <div class="characters-grid">
+                        <div class="character-card" data-character="zhaoyun">
+                            <div class="character-frame">
+                                <img src="assets/touxiang_zhaoyun.png" alt="赵云" class="character-image">
+                                <div class="character-overlay">
+                                    <div class="character-name">赵云</div>
+                                    <div class="character-title">常山赵子龙</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="character-card" data-character="zhangfei">
+                            <div class="character-frame">
+                                <img src="assets/touxiang_zhangfei.png" alt="张飞" class="character-image">
+                                <div class="character-overlay">
+                                    <div class="character-name">张飞</div>
+                                    <div class="character-title">燕人张翼德</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="character-card" data-character="zhugeliang">
+                            <div class="character-frame">
+                                <img src="assets/touxiang_zhugeliang.png" alt="诸葛亮" class="character-image">
+                                <div class="character-overlay">
+                                    <div class="character-name">诸葛亮</div>
+                                    <div class="character-title">卧龙先生</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="character-card" data-character="zhouyu">
+                            <div class="character-frame">
+                                <img src="assets/touxiang_zhouyu.png" alt="周瑜" class="character-image">
+                                <div class="character-overlay">
+                                    <div class="character-name">周瑜</div>
+                                    <div class="character-title">江东周郎</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="character-card" data-character="xiaoqiao">
+                            <div class="character-frame">
+                                <img src="assets/touxiang_xiaoqiao.png" alt="小乔" class="character-image">
+                                <div class="character-overlay">
+                                    <div class="character-name">小乔</div>
+                                    <div class="character-title">江东二乔</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="character-card" data-character="sunshangxiang">
+                            <div class="character-frame">
+                                <img src="assets/touxiang_sunshangxiang.png" alt="孙尚香" class="character-image">
+                                <div class="character-overlay">
+                                    <div class="character-name">孙尚香</div>
+                                    <div class="character-title">弓腰姬</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="character-card" data-character="caocao">
+                            <div class="character-frame">
+                                <img src="assets/touxiang_simayi.png" alt="司马懿" class="character-image">
+                                <div class="character-overlay">
+                                    <div class="character-name">司马懿</div>
+                                    <div class="character-title">冢虎</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="character-card" data-character="sunquan">
+                            <div class="character-frame">
+                                <img src="assets/touxiang_sunquan.png" alt="孙权" class="character-image">
+                                <div class="character-overlay">
+                                    <div class="character-name">孙权</div>
+                                    <div class="character-title">江东之主</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="character-card" data-character="zhangliao">
+                            <div class="character-frame">
+                                <img src="assets/touxiang_zhangliao.png" alt="张辽" class="character-image">
+                                <div class="character-overlay">
+                                    <div class="character-name">张辽</div>
+                                    <div class="character-title">威震逍遥津</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="character-card" data-character="xiahoudun">
+                            <div class="character-frame">
+                                <img src="assets/touxiang_xiahoudun.png" alt="夏侯惇" class="character-image">
+                                <div class="character-overlay">
+                                    <div class="character-name">夏侯惇</div>
+                                    <div class="character-title">独眼将军</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="character-card" data-character="taishici">
+                            <div class="character-frame">
+                                <img src="assets/touxiang_taishici.png" alt="太史慈" class="character-image">
+                                <div class="character-overlay">
+                                    <div class="character-name">太史慈</div>
+                                    <div class="character-title">江东猛将</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="character-card" data-character="zhurong">
+                            <div class="character-frame">
+                                <img src="assets/touxiang_zhurong.png" alt="祝融" class="character-image">
+                                <div class="character-overlay">
+                                    <div class="character-name">祝融</div>
+                                    <div class="character-title">南蛮女王</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -96,9 +233,18 @@
         <section id="video" class="section video">
             <div class="container">
                 <h2 class="section-title">宣传视频</h2>
-                <div class="video-frame">
-                    <button class="play-btn" data-open-video aria-label="播放视频">▶</button>
+                <div class="video-player">
+                    <video id="main-video" 
+                           controls 
+                           preload="metadata"
+                           poster="assets/视频封面.png"
+                           title="三国将无双 宣传片">
+                        <source src="assets/视频.mp4" type="video/mp4">
+                        您的浏览器不支持视频播放。
+                    </video>
                 </div>
+            </div>
+        </section>
             </div>
         </section>
 
@@ -121,31 +267,16 @@
         <div class="container footer-inner">
             <small>© 2025 三国将无双. 保留所有权利。</small>
             <ul class="footer-links">
-                <li><a href="#">用户协议</a></li>
-                <li><a href="#">隐私政策</a></li>
-                <li><a href="#">联系我们</a></li>
-                <li><a href="admin.html" style="color: #9b59b6; font-weight: 600;">🔧 后台管理</a></li>
+                <li><a href="terms.html" onclick="console.log('点击用户协议')">用户协议</a></li>
+                <li><a href="privacy.html" onclick="console.log('点击隐私政策')">隐私政策</a></li>
+                <li><a href="contact.html" onclick="console.log('点击联系我们')">联系我们</a></li>
+                <li><a href="admin.html" style="color: #9b59b6; font-weight: 600;" onclick="console.log('点击后台管理')">🔧 后台管理</a></li>
             </ul>
         </div>
     </footer>
 
-    <div class="modal" id="video-modal" aria-hidden="true" aria-label="宣传视频弹窗">
-        <div class="modal-backdrop" data-close-modal></div>
-        <div class="modal-dialog" role="dialog" aria-modal="true">
-            <button class="modal-close" data-close-modal aria-label="关闭">✕</button>
-            <div class="modal-body">
-                <div class="responsive-iframe">
-                    <iframe id="promo-video"
-                            title="三国将无双 宣传片"
-                            src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            allowfullscreen></iframe>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=20250118"></script>
     <script>
         // 加载后台配置并应用
         function loadAdminConfig() {

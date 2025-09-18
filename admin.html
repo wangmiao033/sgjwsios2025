@@ -243,6 +243,18 @@
                 <div id="screenshotsPreview" class="preview-grid"></div>
             </div>
 
+            <!-- 人物展示管理 -->
+            <div class="section">
+                <h2 class="section-title">👥 人物展示管理</h2>
+                <div class="upload-area" onclick="document.getElementById('charactersUpload').click()">
+                    <div class="upload-icon">👤</div>
+                    <div class="upload-text">点击上传人物立绘</div>
+                    <div class="upload-hint">建议尺寸：145x417px，支持PNG格式</div>
+                </div>
+                <input type="file" id="charactersUpload" class="file-input" accept="image/*" multiple onchange="handleCharactersUpload(event)">
+                <div id="charactersPreview" class="preview-grid"></div>
+            </div>
+
             <!-- App Store按钮管理 -->
             <div class="section">
                 <h2 class="section-title">📱 App Store按钮</h2>
@@ -278,6 +290,46 @@
                     <label class="form-label">副标题</label>
                     <textarea id="subTitle" class="form-input" rows="3" style="resize: vertical;">上百武将齐聚，无双连击爽快割草！
 在掌中重温三国乱世的热血与谋略。</textarea>
+                </div>
+            </div>
+
+            <!-- 内容管理 -->
+            <div class="section">
+                <h2 class="section-title">📄 内容管理</h2>
+                <div class="form-group">
+                    <label class="form-label">选择要编辑的页面</label>
+                    <select id="contentPageSelect" class="form-input" onchange="loadPageContent()">
+                        <option value="">请选择页面</option>
+                        <option value="terms">用户协议</option>
+                        <option value="privacy">隐私政策</option>
+                        <option value="contact">联系我们</option>
+                    </select>
+                </div>
+                
+                <div id="contentEditor" style="display: none;">
+                    <div class="form-group">
+                        <label class="form-label">页面标题</label>
+                        <input type="text" id="pageTitle" class="form-input" placeholder="页面标题">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">页面内容</label>
+                        <textarea id="pageContent" class="form-input" rows="20" style="resize: vertical; font-family: monospace;" placeholder="在这里编辑页面内容..."></textarea>
+                        <small style="color: #666; margin-top: 5px; display: block;">
+                            支持HTML标签，如 &lt;h2&gt;标题&lt;/h2&gt;、&lt;p&gt;段落&lt;/p&gt;、&lt;ul&gt;&lt;li&gt;列表&lt;/li&gt;&lt;/ul&gt; 等
+                        </small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">联系邮箱</label>
+                        <input type="email" id="contactEmail" class="form-input" placeholder="support@sanguo-game.com">
+                    </div>
+                    
+                    <div style="text-align: center; margin-top: 20px;">
+                        <button class="btn btn-success" onclick="savePageContent()">💾 保存页面内容</button>
+                        <button class="btn" onclick="previewPageContent()" style="background: linear-gradient(135deg, #3498db, #2980b9);">👁️ 预览页面</button>
+                        <button class="btn btn-warning" onclick="resetPageContent()">🔄 重置内容</button>
+                    </div>
                 </div>
             </div>
 

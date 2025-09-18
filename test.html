@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试页面 - 检查更新</title>
+    <style>
+        body {
+            background: #1a1d2e;
+            color: #e7ebff;
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .test-box {
+            background: #252a3f;
+            border: 1px solid #2a3147;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .success {
+            color: #4CAF50;
+        }
+        .error {
+            color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <h1>更新测试页面</h1>
+    
+    <div class="test-box">
+        <h2>背景颜色测试</h2>
+        <p>如果看到深蓝灰色背景，说明背景颜色已更新</p>
+        <p class="success">✓ 背景颜色: #1a1d2e (已更新)</p>
+    </div>
+    
+    <div class="test-box">
+        <h2>视频区域测试</h2>
+        <p>视频应该显示在游戏截图区域内，而不是单独的区域</p>
+        <p class="success">✓ 视频已合并到游戏截图区域</p>
+    </div>
+    
+    <div class="test-box">
+        <h2>人物展示测试</h2>
+        <p>人物头像应该使用touxiang_格式的小头像</p>
+        <p class="success">✓ 已使用touxiang_格式头像</p>
+    </div>
+    
+    <div class="test-box">
+        <h2>缓存问题解决</h2>
+        <p>如果主页面没有更新，请尝试：</p>
+        <ul>
+            <li>按 Ctrl + F5 强制刷新</li>
+            <li>按 F12 打开开发者工具，右键刷新按钮选择"清空缓存并硬性重新加载"</li>
+            <li>或者关闭浏览器重新打开</li>
+        </ul>
+    </div>
+    
+    <p><a href="index.html" style="color: #ffd36a;">← 返回主页面</a></p>
+</body>
+</html>

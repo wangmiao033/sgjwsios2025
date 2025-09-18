@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>内容更新工具 - 三国将无双</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .content {
+            padding: 40px;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 2px solid #f0f0f0;
+            border-radius: 12px;
+            background: #fafafa;
+        }
+        .section h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+        .form-input, .form-textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            box-sizing: border-box;
+        }
+        .form-textarea {
+            height: 300px;
+            resize: vertical;
+        }
+        .btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            margin-right: 10px;
+            margin-bottom: 10px;
+        }
+        .btn:hover {
+            background: linear-gradient(135deg, #2980b9, #1f618d);
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #27ae60, #229954);
+        }
+        .btn-success:hover {
+            background: linear-gradient(135deg, #229954, #1e8449);
+        }
+        .btn-warning {
+            background: linear-gradient(135deg, #f39c12, #e67e22);
+        }
+        .btn-warning:hover {
+            background: linear-gradient(135deg, #e67e22, #d35400);
+        }
+        .url-input {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+        }
+        .instructions {
+            background: #e8f4fd;
+            border: 1px solid #bee5eb;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .instructions h4 {
+            color: #0c5460;
+            margin: 0 0 10px 0;
+        }
+        .instructions ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .instructions li {
+            margin-bottom: 5px;
+            color: #0c5460;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📄 内容更新工具</h1>
+            <p>更新用户协议和隐私政策内容</p>
+        </div>
+        
+        <div class="content">
+            <div class="instructions">
+                <h4>📋 使用说明</h4>
+                <ol>
+                    <li>访问提供的链接，复制页面内容</li>
+                    <li>将内容粘贴到下方对应的文本框中</li>
+                    <li>点击"生成文件"按钮下载更新后的HTML文件</li>
+                    <li>将下载的文件替换原来的 terms.html 和 privacy.html</li>
+                </ol>
+            </div>
+
+            <!-- 用户协议 -->
+            <div class="section">
+                <h3>📋 用户协议 (terms.html)</h3>
+                <div class="form-group">
+                    <label class="form-label">源链接</label>
+                    <input type="url" class="form-input url-input" value="https://l3-prod-all-api-yqlxx.souldargongame.com/yhxy_dxpf.html" readonly>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">页面标题</label>
+                    <input type="text" id="termsTitle" class="form-input" value="用户协议" placeholder="页面标题">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">页面内容 (支持HTML标签)</label>
+                    <textarea id="termsContent" class="form-textarea" placeholder="请将用户协议的内容粘贴到这里..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">联系邮箱</label>
+                    <input type="email" id="termsEmail" class="form-input" value="support@sanguo-game.com" placeholder="联系邮箱">
+                </div>
+                <button class="btn btn-success" onclick="generateTerms()">💾 生成用户协议文件</button>
+                <button class="btn" onclick="previewTerms()">👁️ 预览用户协议</button>
+            </div>
+
+            <!-- 隐私政策 -->
+            <div class="section">
+                <h3>🔒 隐私政策 (privacy.html)</h3>
+                <div class="form-group">
+                    <label class="form-label">源链接</label>
+                    <input type="url" class="form-input url-input" value="https://l3-prod-all-api-yqlxx.souldargongame.com/yszc_dxpf.html" readonly>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">页面标题</label>
+                    <input type="text" id="privacyTitle" class="form-input" value="隐私政策" placeholder="页面标题">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">页面内容 (支持HTML标签)</label>
+                    <textarea id="privacyContent" class="form-textarea" placeholder="请将隐私政策的内容粘贴到这里..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">联系邮箱</label>
+                    <input type="email" id="privacyEmail" class="form-input" value="privacy@sanguo-game.com" placeholder="联系邮箱">
+                </div>
+                <button class="btn btn-success" onclick="generatePrivacy()">💾 生成隐私政策文件</button>
+                <button class="btn" onclick="previewPrivacy()">👁️ 预览隐私政策</button>
+            </div>
+
+            <!-- 批量操作 -->
+            <div class="section">
+                <h3>⚡ 批量操作</h3>
+                <button class="btn btn-warning" onclick="generateAll()">📦 生成所有文件</button>
+                <button class="btn" onclick="clearAll()">🗑️ 清空所有内容</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 生成用户协议文件
+        function generateTerms() {
+            const title = document.getElementById('termsTitle').value;
+            const content = document.getElementById('termsContent').value;
+            const email = document.getElementById('termsEmail').value;
+            
+            if (!title || !content) {
+                alert('请填写页面标题和内容');
+                return;
+            }
+            
+            const html = generatePageHTML(title, content, email);
+            downloadFile(html, 'terms.html', 'text/html');
+        }
+
+        // 生成隐私政策文件
+        function generatePrivacy() {
+            const title = document.getElementById('privacyTitle').value;
+            const content = document.getElementById('privacyContent').value;
+            const email = document.getElementById('privacyEmail').value;
+            
+            if (!title || !content) {
+                alert('请填写页面标题和内容');
+                return;
+            }
+            
+            const html = generatePageHTML(title, content, email);
+            downloadFile(html, 'privacy.html', 'text/html');
+        }
+
+        // 生成所有文件
+        function generateAll() {
+            generateTerms();
+            setTimeout(() => generatePrivacy(), 500);
+        }
+
+        // 预览用户协议
+        function previewTerms() {
+            const title = document.getElementById('termsTitle').value;
+            const content = document.getElementById('termsContent').value;
+            const email = document.getElementById('termsEmail').value;
+            
+            if (!title || !content) {
+                alert('请先填写页面内容');
+                return;
+            }
+            
+            const html = generatePageHTML(title, content, email);
+            const previewWindow = window.open('', '_blank', 'width=1200,height=800');
+            previewWindow.document.write(html);
+            previewWindow.document.close();
+        }
+
+        // 预览隐私政策
+        function previewPrivacy() {
+            const title = document.getElementById('privacyTitle').value;
+            const content = document.getElementById('privacyContent').value;
+            const email = document.getElementById('privacyEmail').value;
+            
+            if (!title || !content) {
+                alert('请先填写页面内容');
+                return;
+            }
+            
+            const html = generatePageHTML(title, content, email);
+            const previewWindow = window.open('', '_blank', 'width=1200,height=800');
+            previewWindow.document.write(html);
+            previewWindow.document.close();
+        }
+
+        // 清空所有内容
+        function clearAll() {
+            if (confirm('确定要清空所有内容吗？')) {
+                document.getElementById('termsContent').value = '';
+                document.getElementById('privacyContent').value = '';
+            }
+        }
+
+        // 生成页面HTML
+        function generatePageHTML(title, content, email) {
+            return `<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${title} - 三国将无双</title>
+    <link rel="stylesheet" href="styles.css?v=20250118-6">
+    <link rel="icon" href="assets/logo.png" type="image/png">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo">
+                <img src="assets/logo.png" alt="三国将无双" width="32" height="32">
+                <span>三国将无双</span>
+            </a>
+            <nav class="nav" aria-label="主导航">
+                <ul class="nav-menu">
+                    <li><a href="index.html">返回首页</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+        <section class="section">
+            <div class="container">
+                <h1 class="section-title">${title}</h1>
+                <div class="content">
+                    ${content}
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>&copy; 2025 三国将无双，保留所有权利。</p>
+            <div class="footer-links">
+                <a href="terms.html">用户协议</a>
+                <a href="privacy.html">隐私政策</a>
+                <a href="contact.html">联系我们</a>
+                <a href="admin.html">后台管理</a>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        .content h2 {
+            color: var(--text);
+            margin: 30px 0 15px;
+            font-size: 20px;
+        }
+        
+        .content h3 {
+            color: var(--accent);
+            margin: 20px 0 10px;
+            font-size: 16px;
+        }
+        
+        .content p {
+            color: var(--muted);
+            margin: 10px 0;
+        }
+        
+        .content ul {
+            color: var(--muted);
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        .content ol {
+            color: var(--muted);
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .content th, .content td {
+            border: 1px solid var(--border);
+            padding: 12px;
+            text-align: left;
+        }
+        
+        .content th {
+            background: var(--card);
+            font-weight: 600;
+        }
+    </style>
+</body>
+</html>`;
+        }
+
+        // 下载文件
+        function downloadFile(content, filename, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
